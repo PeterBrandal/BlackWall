@@ -6,6 +6,7 @@ import { GlitchTitle } from '@/components/GlitchTitle'
 import { TargetInput } from '@/components/TargetInput'
 import { ProbeStatusGrid } from '@/components/ProbeStatusGrid'
 import { useSSE } from '@/hooks/useSSE'
+import MapView from '@/components/MapView'
 
 
 interface HomePageProps {
@@ -13,7 +14,7 @@ interface HomePageProps {
 }
 
 export function HomePage({ onInitiateBreach }: HomePageProps) {
-  const { lines, scanning, done, startScan } = useSSE()
+  const { lines, scanning, done, startScan, coords } = useSSE()
 
   const handleBreach = (target: string) => {
     startScan(target)
@@ -72,19 +73,34 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
       </motion.div>
       {/* Terminal output — only renders once a scan has started */}
       {lines.length > 0 && (
-        <div className="mt-6 w-full max-w-2xl border border-crimson border-opacity-20 bg-void-light p-5 clip-corner font-mono text-xs">
-          {lines.map((line) => (
-            <p key={line.id} className="text-crimson leading-relaxed">
-              {'>'} {line.text}
-            </p>
-          ))}
-          {scanning && (
-            <span className="animate-blink text-crimson">█</span>
-          )}
-          {done && (
-            <p className="mt-2 text-green-400">{'>'} BREACH COMPLETE.</p>
-          )}
-        </div>
+        <motion.div
+          className="flex w-full max-w-5xl gap-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+        >
+          {/* LEFT — terminal */}
+          <motion.div
+            layout
+            className="flex-1 border border-crimson/20 bg-void-light clip-corner p-4 font-mono text-sm min-w-0"
+          >
+            {lines.map((line) => (
+              <p key={line.id} className="text-crimson/80">&gt; {line.text}</p>
+            ))}
+            {scanning && <span className="animate-blink text-crimson">█</span>}
+            {done && <p className="mt-2 text-green-400">&gt; BREACH COMPLETE.</p>}
+          </motion.div>
+
+          {/* RIGHT — map slides in */}
+          <motion.div
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: "45%", opacity: 1 }}
+            transition={{ duration: 0.6, ease: "easeInOut" }}
+            className="shrink-0 overflow-hidden"
+          >
+            <MapView coords={coords} />
+          </motion.div>
+        </motion.div>
       )}
       {/* ── Probe matrix ─────────────────────────────────── */}
       <motion.div

@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import asyncio
-from app.probes import ip_api
+from app.probes import ip_api, crt_sh
 
 app = FastAPI(title="BlackWall Backend API")
 
@@ -29,11 +29,15 @@ async def scan_generator(target: str):
     yield sse_event(f"INITIATING BREACH ON TARGET: {target}")
     await asyncio.sleep(0.5)
     
-    
     yield sse_event("PROBE [ip-api]")
     async for line in ip_api.probe(target):
         yield sse_event(line)
         await asyncio.sleep(0.15)
+        
+    yield sse_event("PROBE [crt.sh]")
+    async for line in crt_sh.probe(target):
+        yield sse_event(line)
+        await asyncio.sleep(0.1)
   
     yield sse_event("SCAN COMPLETE")
 
