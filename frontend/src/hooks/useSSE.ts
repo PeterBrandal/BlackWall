@@ -9,6 +9,8 @@ export function useSSE() {
   const [lines, setLines] = useState<ScanLine[]>([]);
   const [scanning, setScanning] = useState(false);
   const [done, setDone] = useState(false);
+  const [coords, setCoords] = useState<[number, number] | null>(null)
+
 
   const startScan = useCallback((target: string) => {
     setLines([]);
@@ -31,6 +33,12 @@ export function useSSE() {
         return;
       }
 
+      if (text.startsWith("[geo]")) {
+        const [lat, lon] = text.replace("[geo]", "").trim().split(",").map(Number);
+        setCoords([lon, lat]);
+        return;
+      } 
+
       setLines((prev) => [...prev, { id: counter++, text }]);
     };
 
@@ -42,7 +50,7 @@ export function useSSE() {
     };
   }, []);
 
-return { lines, scanning, done, startScan }
+return { lines, scanning, done, startScan, coords }
 
 }
 

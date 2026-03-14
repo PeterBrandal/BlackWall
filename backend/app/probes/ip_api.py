@@ -16,7 +16,6 @@ async def probe(target: str):
     yield f"[ip-api] ISP      : {data.get('isp')}"
     yield f"[ip-api] Org      : {data.get('org')}"
     yield f"[ip-api] Timezone : {data.get('timezone')}"
-    yield f"[ip-api] Coords   : {data.get('lat')}, {data.get('lon')}"
-    
-    
+    yield f"[ip-api] Geo      : {data.get('lat')}, {data.get('lon')}"
+    yield f"[geo] {data.get('lat')}, {data.get('lon')}"
     
