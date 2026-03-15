@@ -13,6 +13,14 @@ interface HomePageProps {
   onInitiateBreach?: (target: string) => void
 }
 
+function lineColor(text: string): string {
+  if (text.startsWith('[ip-api]')) return 'text-green-400'
+  if (text.startsWith('[crt.sh]')) return 'text-blue-400'
+  if (text.startsWith('[github]')) return 'text-purple-400'
+  return 'text-crimson/80'
+}
+
+
 export function HomePage({ onInitiateBreach }: HomePageProps) {
   const { lines, scanning, done, startScan, coords } = useSSE()
   const [hasScanned, setHasSanned] = useState(false)
@@ -105,7 +113,7 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
                   transition={{ duration: 0.25 }}
                 >
                   {lines.map((line) => (
-                    <p key={line.id} className="text-crimson/80">&gt; {line.text}</p>
+                    <p key={line.id} className={lineColor(line.text)}>&gt; {line.text}</p>
                   ))}
                   {scanning && <span className="animate-blink text-crimson">█</span>}
                 </motion.div>
