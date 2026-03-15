@@ -2,7 +2,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import asyncio
-from app.probes import ip_api, crt_sh
+from app.probes import ip_api, crt_sh, github, brreg
+from app.utils import email_permutations
+
 
 app = FastAPI(title="BlackWall Backend API")
 
@@ -22,39 +24,45 @@ app.add_middleware(
 def sse_event(data: str) -> str:
     return f"data: {data}\n\n"
 
+async def profile_generator(name: str):
+    yield sse_event(f"INITIATING PROFILE COMPILATION: {name}")
+    await asyncio.sleep(0.3)
 
-# --- Fake Scan Stream ---
-# An async generator that simulates a long-running scan and yields results as they become available.
-async def scan_generator(target: str):
-    yield sse_event(f"INITIATING BREACH ON TARGET: {target}")
-    await asyncio.sleep(0.5)
-    
-    yield sse_event("PROBE [ip-api]")
-    async for line in ip_api.probe(target):
-        yield sse_event(line)
-        await asyncio.sleep(0.15)
-        
-    yield sse_event("PROBE [crt.sh]")
-    async for line in crt_sh.probe(target):
+    emails = email_permutations.generate_email_permutations(name)
+    yield sse_event(f"[emails] {', '.join(emails[:6])}")
+    await asyncio.sleep(0.3)
+
+    # GitHub — try first name as username
+    yield sse_event("[probe:start] github")
+    username = name.lower().split()[0]
+    found_github = False
+    async for line in github.probe(username):
         yield sse_event(line)
         await asyncio.sleep(0.1)
-  
-    yield sse_event("SCAN COMPLETE")
+        found_github = True
+    yield sse_event("[probe:done] github" if found_github else "[probe:fail] github")
+
+    await asyncio.sleep(0.2)
+
+    # Brreg — search by full name
+    yield sse_event("[probe:start] brreg")
+    found_brreg = False
+    async for line in brreg.probe(name):
+        yield sse_event(line)
+        await asyncio.sleep(0.1)
+        found_brreg = True
+    yield sse_event("[probe:done] brreg" if found_brreg else "[probe:fail] brreg")
+
+    yield sse_event("PROFILE COMPLETE")
 
 
-@app.get("/health")
-async def health_check():
-    return {"status": "online", "system": "BLACKWALL"}
-
-
-@app.get("/api/scan")
-async def scan(target: str):
+@app.get("/api/profile")
+async def profile(name: str):
     return StreamingResponse(
-        scan_generator(target),
+        profile_generator(name),
         media_type="text/event-stream",
         headers={
-            # Avoid buffering and caching of the response, send data immediately
             "Cache-Control": "no-cache",
-            "X-Accel-Buffering": "no",  # Disable buffering for Nginx if added
+            "X-Accel-Buffering": "no",
         }
     )
