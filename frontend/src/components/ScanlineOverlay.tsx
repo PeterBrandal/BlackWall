@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 
 export function ScanlineOverlay() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-50">
+    <div className="pointer-events-none fixed inset-0 z-0">
       {/* Static CRT scanline texture */}
       <div className="scanlines absolute inset-0 opacity-40" />
 
