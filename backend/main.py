@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import asyncio
 from dotenv import load_dotenv
-from app.probes import ip_api, crt_sh, github, dns_probe, whois_probe, headers_probe, ssl_probe, redirect_probe
+from app.probes import ip_api, crt_sh, github, dns_probe, whois_probe, headers_probe, ssl_probe, redirect_probe, gdpr_probe
 
 load_dotenv()
 
@@ -111,6 +111,16 @@ async def scan_generator(target: str):
             await asyncio.sleep(0.05)
             has_data = True
         yield sse_event("[probe:done] headers" if has_data else "[probe:fail] headers")
+        await asyncio.sleep(0.2)
+
+        # --- GDPR ---
+        yield sse_event("[probe:start] gdpr")
+        has_data = False
+        async for line in gdpr_probe.probe(target):
+            yield sse_event(line)
+            await asyncio.sleep(0.05)
+            has_data = True
+        yield sse_event("[probe:done] gdpr" if has_data else "[probe:fail] gdpr")
 
     yield sse_event("SCAN COMPLETE")
 

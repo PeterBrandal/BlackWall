@@ -12,7 +12,7 @@ export interface LangEntry {
   pct: number;
 }
 
-const PROBE_NAMES = ["ip-api", "whois", "dns", "crt.sh", "ssl", "redirect", "github", "headers"];
+const PROBE_NAMES = ["ip-api", "whois", "dns", "crt.sh", "ssl", "redirect", "github", "headers", "gdpr"];
 
 function initialProbes(): Record<string, ProbeState> {
   return Object.fromEntries(

@@ -10,6 +10,7 @@ import { SslCard }       from '@/components/SslCard'
 import { RedirectCard }  from '@/components/RedirectCard'
 import { GitHubCard }    from '@/components/GitHubCard'
 import { HeadersCard }   from '@/components/HeadersCard'
+import { GdprCard }      from '@/components/GdprCard'
 import { useSSE }        from '@/hooks/useSSE'
 import { useRef, useState } from 'react'
 
@@ -103,6 +104,9 @@ export function HomePage() {
             <GitHubCard   state={probes["github"]}   langs={langs} />
             <div className="sm:col-span-2">
               <HeadersCard state={probes["headers"]} />
+            </div>
+            <div className="sm:col-span-2">
+              <GdprCard state={probes["gdpr"]} />
             </div>
           </motion.div>
         )}
