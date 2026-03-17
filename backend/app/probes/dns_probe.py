@@ -1,7 +1,25 @@
 import dns.resolver
 import asyncio
+import re
 
 RECORD_TYPES = ["A", "MX", "NS", "TXT"]
+
+# Verification token patterns — noisy, no intel value
+VERIFICATION_PATTERNS = re.compile(
+    r"(MS=ms|google-site-verification|facebook-domain-verification|"
+    r"docker-verification|apple-domain-verification|"
+    r"adobe-sign-verification|atlassian-domain-verification|"
+    r"[a-f0-9]{32,})",  # long hex strings
+    re.IGNORECASE,
+)
+
+
+def _is_useful_txt(value: str) -> bool:
+    """Keep SPF, DMARC, DKIM and other meaningful records. Drop verification tokens."""
+    clean = value.strip('"')
+    if VERIFICATION_PATTERNS.search(clean):
+        return False
+    return True
 
 
 async def probe(target: str):
@@ -12,10 +30,15 @@ async def probe(target: str):
             )
             for rdata in answers:
                 value = str(rdata).rstrip(".")
-                # Truncate long TXT records
-                if rtype == "TXT" and len(value) > 80:
-                    value = value[:80] + "..."
+
+                if rtype == "TXT":
+                    if not _is_useful_txt(value):
+                        continue
+                    if len(value) > 80:
+                        value = value[:80] + "..."
+
                 yield f"[dns] {rtype.ljust(3)} : {value}"
+
         except dns.resolver.NoAnswer:
             yield f"[dns] {rtype.ljust(3)} : —"
         except dns.resolver.NXDOMAIN:

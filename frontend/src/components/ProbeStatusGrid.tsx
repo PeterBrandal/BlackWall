@@ -17,6 +17,7 @@ const PROBES: Probe[] = [
   { id: 'crtsh',    name: 'CRT.SH',    description: 'Certificate transparency logs',  accepts: ['DOMAIN'],       status: 'active'       },
   { id: 'wayback',  name: 'WAYBACK',   description: 'Historical web snapshots',       accepts: ['DOMAIN'],       status: 'active'       },
   { id: 'github',   name: 'GITHUB',    description: 'Org repos & tech stack',         accepts: ['DOMAIN'],       status: 'active'       },
+  { id: 'headers',  name: 'HEADERS',  description: 'Security headers audit',       accepts: ['DOMAIN'],       status: 'active'       },
   { id: 'shodan',   name: 'SHODAN',    description: 'Open ports & CVE intel',         accepts: ['IP'],           status: 'requires-key' },
   { id: 'virustotal', name: 'VIRUSTOTAL', description: 'Threat intel & malware scan', accepts: ['IP', 'DOMAIN'], status: 'requires-key' },
 ]

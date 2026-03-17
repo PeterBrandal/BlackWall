@@ -44,9 +44,9 @@ export default function MapView({ coords }: Props) {
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill="#0d1117"
-                  stroke="#1f4068"
-                  strokeWidth={0.5}
+                  fill="#1a2744"
+                  stroke="#3b82f6"
+                  strokeWidth={0.6}
                 />
               ))
             }
@@ -58,13 +58,13 @@ export default function MapView({ coords }: Props) {
               <motion.circle
                 r={8}
                 fill="none"
-                stroke="#00ff9f"
+                stroke="#FF003C"
                 strokeWidth={1.5}
                 animate={{ r: [8, 22], opacity: [0.8, 0] }}
                 transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.3 }}
               />
               {/* Core dot */}
-              <circle r={3} fill="#00ff9f" />
+              <circle r={3} fill="#FF003C" />
             </Marker>
           ))}
         </ComposableMap>
