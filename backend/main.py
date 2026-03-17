@@ -2,7 +2,10 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 import asyncio
+from dotenv import load_dotenv
 from app.probes import ip_api, crt_sh, github, wayback, dns_probe, whois_probe
+
+load_dotenv()
 
 app = FastAPI(title="BlackWall Backend API")
 
