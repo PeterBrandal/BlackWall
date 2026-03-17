@@ -9,26 +9,31 @@ DOMAINS = [
 
 
 def generate_email_permutations(full_name: str) -> list[str]:
-    parts = full_name.lower().strip().split()
+    cleaned = full_name.lower().strip()
 
-    if len(parts) < 2:
-        first, last = parts[0], ""
+    # If input is already an email, return it as-is
+    if "@" in cleaned:
+        return [cleaned]
+
+    parts = cleaned.split()
+    first = parts[0]
+    last  = parts[-1] if len(parts) > 1 else ""
+
+    if last:
+        patterns = [
+            f"{first}.{last}",
+            f"{first}{last}",
+            f"{first[0]}.{last}",
+            f"{first[0]}{last}",
+            f"{first}_{last}",
+            f"{first}",
+        ]
     else:
-        first, last = parts[0], parts[-1]
+        patterns = [f"{first}"]
 
-    patterns = [
-        f"{first}.{last}",       # peter.hansen
-        f"{first}{last}",        # peterhansen
-        f"{first[0]}.{last}",    # p.hansen
-        f"{first[0]}{last}",     # phansen
-        f"{first}",              # peter
-        f"{first}_{last}",       # peter_hansen
-    ]
-    
     emails = []
-    
     for pattern in patterns:
         for domain in DOMAINS:
             emails.append(f"{pattern}@{domain}")
-            
+
     return emails

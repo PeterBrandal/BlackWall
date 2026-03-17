@@ -1,72 +1,85 @@
-import { useState, useEffect } from "react"
-import { animate } from "framer-motion"
+import { useEffect, useState } from "react"
+import { animate, motion } from "framer-motion"
 import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps"
-import { motion } from "framer-motion"
 
 interface Props {
-  coords: [number, number] | null
+  coords: [number, number][]
 }
 
 export default function MapView({ coords }: Props) {
-  const [scale, setScale] = useState(147)
+  const [scale, setScale]       = useState(147)
   const [centerLon, setCenterLon] = useState(0)
   const [centerLat, setCenterLat] = useState(20)
 
   useEffect(() => {
-    if (!coords) return
+    if (!coords.length) return
 
-    const s = animate(scale, 500, {
-      duration: 1.5, ease: "easeInOut", onUpdate: setScale
-    })
-    const lon = animate(centerLon, coords[0], {
-      duration: 1.5, ease: "easeInOut", onUpdate: setCenterLon
-    })
-    const lat = animate(centerLat, coords[1], {
-      duration: 1.5, ease: "easeInOut", onUpdate: setCenterLat
-    })
+    // Center on the first marker
+    const [lon, lat] = coords[0]
 
-    return () => { s.stop(); lon.stop(); lat.stop() }
+    const s   = animate(scale,     500,  { duration: 1.5, ease: "easeInOut", onUpdate: setScale })
+    const lo  = animate(centerLon, lon,  { duration: 1.5, ease: "easeInOut", onUpdate: setCenterLon })
+    const la  = animate(centerLat, lat,  { duration: 1.5, ease: "easeInOut", onUpdate: setCenterLat })
+
+    return () => { s.stop(); lo.stop(); la.stop() }
   }, [coords])
 
   return (
     <div className="w-full h-full p-2 font-mono">
-      <p className="text-xs text-crimson/50 mb-1">SIGNAL ORIGIN</p>
+      <p className="text-xs text-cyan-400/50 mb-1 tracking-widest">SIGNAL ORIGIN</p>
+
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{duration: 0.8, ease: "easeInOut"}}
-        >
-      <ComposableMap
-        projection="geoMercator"
-        projectionConfig={{ center: [centerLon, centerLat], scale }}
-        style={{ width: "100%", height: "220px" }}
+        transition={{ duration: 0.8, ease: "easeInOut" }}
       >
-        <Geographies geography="/countries-110m.json">
-          {({ geographies }) =>
-            geographies.map((geo) => (
-              <Geography
-                key={geo.rsmKey}
-                geography={geo}
-                fill="#0a0a0a"
-                stroke="#3d0000"
-                strokeWidth={0.5}
-              />
-            ))
-          }
-        </Geographies>
+        <ComposableMap
+          projection="geoMercator"
+          projectionConfig={{ center: [centerLon, centerLat], scale }}
+          style={{ width: "100%", height: "220px" }}
+        >
+          <Geographies geography="/countries-110m.json">
+            {({ geographies }) =>
+              geographies.map((geo) => (
+                <Geography
+                  key={geo.rsmKey}
+                  geography={geo}
+                  fill="#0d1117"
+                  stroke="#1f4068"
+                  strokeWidth={0.5}
+                />
+              ))
+            }
+          </Geographies>
 
-        {coords && (
-          <Marker coordinates={coords}>
-            <motion.circle
-              r={8} fill="none" stroke="#dc2626" strokeWidth={1}
-              animate={{ r: [8, 20], opacity: [1, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            />
-            <circle r={3} fill="#dc2626" />
-          </Marker>
-        )}
-      </ComposableMap>
-    </motion.div>
+          {coords.map(([lon, lat], i) => (
+            <Marker key={i} coordinates={[lon, lat]}>
+              {/* Pulsing ring */}
+              <motion.circle
+                r={8}
+                fill="none"
+                stroke="#00ff9f"
+                strokeWidth={1.5}
+                animate={{ r: [8, 22], opacity: [0.8, 0] }}
+                transition={{ duration: 1.8, repeat: Infinity, delay: i * 0.3 }}
+              />
+              {/* Core dot */}
+              <circle r={3} fill="#00ff9f" />
+            </Marker>
+          ))}
+        </ComposableMap>
+      </motion.div>
+
+      {/* Coordinate readout */}
+      {coords.length > 0 && (
+        <div className="mt-1 space-y-0.5">
+          {coords.map(([lon, lat], i) => (
+            <p key={i} className="font-mono text-xs text-cyan-400/40">
+              {i + 1}. {lat.toFixed(4)}, {lon.toFixed(4)}
+            </p>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
