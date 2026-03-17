@@ -1,37 +1,31 @@
-// Main landing page — the breach terminal.
-// Layout: system ID line → glitch title → divider → target input → probe grid → footer.
-// Everything fades/slides in with staggered delays after the boot sequence completes.
 import { motion, AnimatePresence } from 'framer-motion'
 import { GlitchTitle } from '@/components/GlitchTitle'
 import { TargetInput } from '@/components/TargetInput'
 import { ProbeStatusGrid } from '@/components/ProbeStatusGrid'
+import { TechStackBar } from '@/components/TechStackBar'
 import { useSSE } from '@/hooks/useSSE'
 import MapView from '@/components/MapView'
 import { useState, useRef } from 'react'
 
-interface HomePageProps {
-  onInitiateBreach?: (target: string) => void
-}
-
 function lineColor(text: string): string {
-  if (text.startsWith('[ip-api]')) return 'text-green-400'
-  if (text.startsWith('[crt.sh]')) return 'text-blue-400'
-  if (text.startsWith('[github]')) return 'text-purple-400'
+  if (text.startsWith('[ip-api]'))  return 'text-green-400'
+  if (text.startsWith('[crt.sh]'))  return 'text-blue-400'
+  if (text.startsWith('[github]'))  return 'text-purple-400'
+  if (text.startsWith('[whois]'))   return 'text-yellow-400'
+  if (text.startsWith('[dns]'))     return 'text-cyan-400'
+  if (text.startsWith('[wayback]')) return 'text-orange-400'
   return 'text-crimson/80'
 }
 
-
-export function HomePage({ onInitiateBreach }: HomePageProps) {
-  const { lines, scanning, done, startScan, coords } = useSSE()
-  const [hasScanned, setHasSanned] = useState(false)
+export function HomePage() {
+  const { lines, scanning, done, startScan, coords, langs } = useSSE()
+  const [hasScanned, setHasScanned] = useState(false)
   const scanKey = useRef(0)
-
 
   const handleBreach = (target: string) => {
     scanKey.current += 1
-    setHasSanned(true)
+    setHasScanned(true)
     startScan(target)
-    onInitiateBreach?.(target)
   }
 
   return (
@@ -43,8 +37,6 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
     >
       {/* ── Hero block ─────────────────────────────────── */}
       <div className="mb-10 flex flex-col items-center text-center">
-
-        {/* System identifier above the title */}
         <motion.p
           initial={{ opacity: 0, y: -6 }}
           animate={{ opacity: 1, y: 0 }}
@@ -54,7 +46,6 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
           SYS://BREACH.INIT.V2.0.77
         </motion.p>
 
-        {/* The glitching title — the visual centrepiece */}
         <GlitchTitle text="BLACKWALL" />
 
         <motion.p
@@ -66,7 +57,6 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
           NETRUNNER OSINT PROTOCOL
         </motion.p>
 
-        {/* Decorative divider */}
         <motion.div
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
@@ -84,7 +74,8 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
       >
         <TargetInput onSubmit={handleBreach} />
       </motion.div>
-      {/* Terminal output — only renders once a scan has started */}
+
+      {/* ── Results block ───────────────────────────────── */}
       {hasScanned && (
         <motion.div
           className="w-full max-w-5xl border border-crimson/20 bg-void-light clip-corner"
@@ -95,14 +86,12 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
           {/* Header bar */}
           <div className="border-b border-crimson/20 px-4 py-2 font-mono text-xs text-crimson/40 flex justify-between">
             <span>BREACH TERMINAL</span>
-            {done && <span className="text-green-400">SCAN COMPLETE</span>}
+            {done    && <span className="text-green-400">SCAN COMPLETE</span>}
             {scanning && <span className="animate-blink">SCANNING...</span>}
           </div>
 
-          {/* Body — terminal left, map right */}
+          {/* Terminal + Map row */}
           <div className="flex min-h-64">
-
-            {/* Terminal */}
             <div className="flex-1 p-4 font-mono text-sm border-r border-crimson/20 overflow-y-auto max-h-80">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -113,14 +102,16 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
                   transition={{ duration: 0.25 }}
                 >
                   {lines.map((line) => (
-                    <p key={line.id} className={lineColor(line.text)}>&gt; {line.text}</p>
+                    <p key={line.id} className={lineColor(line.text)}>
+                      &gt; {line.text}
+                    </p>
                   ))}
                   {scanning && <span className="animate-blink text-crimson">█</span>}
                 </motion.div>
               </AnimatePresence>
             </div>
 
-            {/* Map — slides in once */}
+            {/* Map */}
             <motion.div
               initial={{ width: 0, opacity: 0 }}
               animate={{ width: "45%", opacity: 1 }}
@@ -129,15 +120,31 @@ export function HomePage({ onInitiateBreach }: HomePageProps) {
             >
               <MapView coords={coords} />
             </motion.div>
-
           </div>
+
+          {/* GitHub tech stack — renders once langs arrive */}
+          <AnimatePresence>
+            {langs.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.4 }}
+                className="border-t border-crimson/20 px-4 py-3"
+              >
+                <TechStackBar langs={langs} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       )}
+
       {/* ── Probe matrix ─────────────────────────────────── */}
       <motion.div
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.05 }}
+        className="mt-10"
       >
         <ProbeStatusGrid />
       </motion.div>
