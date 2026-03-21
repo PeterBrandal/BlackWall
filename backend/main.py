@@ -9,9 +9,18 @@ load_dotenv()
 
 app = FastAPI(title="BlackWall Backend API")
 
+import os
+
+ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+]
+if vercel_url := os.getenv("VERCEL_FRONTEND_URL"):
+    ALLOWED_ORIGINS.append(vercel_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174"],
+    allow_origins=ALLOWED_ORIGINS,
     allow_methods=["GET"],
     allow_headers=["*"],
 )
