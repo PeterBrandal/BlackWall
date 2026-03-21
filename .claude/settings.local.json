@@ -5,7 +5,8 @@
       "WebFetch(domain:data.brreg.no)",
       "WebFetch(domain:www.kartverket.no)",
       "WebFetch(domain:ws.geonorge.no)",
-      "WebFetch(domain:kartkatalog.geonorge.no)"
+      "WebFetch(domain:kartkatalog.geonorge.no)",
+      "Bash(venv/Scripts/pip install:*)"
     ]
   }
 }
