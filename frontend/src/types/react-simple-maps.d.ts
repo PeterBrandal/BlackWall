@@ -22,12 +22,14 @@ declare module 'react-simple-maps' {
     children: (props: GeographiesChildrenProps) => ReactNode
   }): JSX.Element
 
-  export function Geography(props: SVGProps<SVGPathElement> & {
-    geography: Geography
-    fill?: string
-    stroke?: string
-    strokeWidth?: number
-  }): JSX.Element
+  export function Geography(
+    props: SVGProps<SVGPathElement> & {
+      geography: Geography
+      fill?: string
+      stroke?: string
+      strokeWidth?: number
+    }
+  ): JSX.Element
 
   export function Marker(props: {
     coordinates: [number, number]
