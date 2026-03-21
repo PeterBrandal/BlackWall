@@ -12,24 +12,24 @@ interface BootLine {
 }
 
 const BOOT_LINES: BootLine[] = [
-  { text: 'BLACKWALL INTERFACE // v2.0.77',               type: 'system',  delay: 0    },
-  { text: '─────────────────────────────────────────────', type: 'normal',  delay: 200  },
-  { text: 'INITIALIZING NEURAL BRIDGE...',                 type: 'normal',  delay: 450  },
-  { text: 'PROXY CHAIN: ESTABLISHED [7 HOPS OBFUSCATED]', type: 'success', delay: 800  },
-  { text: 'ICE BREAKER MODULE: LOADED',                   type: 'success', delay: 1100 },
-  { text: 'OSINT MATRIX: ONLINE',                         type: 'success', delay: 1400 },
-  { text: 'DATA SOURCES: 8 / 8 ACTIVE',                   type: 'success', delay: 1650 },
-  { text: '─────────────────────────────────────────────', type: 'normal',  delay: 1900 },
-  { text: '⚠  NET AUTHORITY MONITORING DETECTED',         type: 'warning', delay: 2150 },
-  { text: '⚠  ALL QUERIES LOGGED. PROCEED CAUTIOUSLY.',   type: 'warning', delay: 2400 },
-  { text: '─────────────────────────────────────────────', type: 'normal',  delay: 2650 },
-  { text: '> SYSTEM READY. AWAITING TARGET INPUT.',        type: 'system',  delay: 2950 },
+  { text: 'BLACKWALL INTERFACE // v2.0.77', type: 'system', delay: 0 },
+  { text: '─────────────────────────────────────────────', type: 'normal', delay: 200 },
+  { text: 'INITIALIZING NEURAL BRIDGE...', type: 'normal', delay: 450 },
+  { text: 'PROXY CHAIN: ESTABLISHED [7 HOPS OBFUSCATED]', type: 'success', delay: 800 },
+  { text: 'ICE BREAKER MODULE: LOADED', type: 'success', delay: 1100 },
+  { text: 'OSINT MATRIX: ONLINE', type: 'success', delay: 1400 },
+  { text: 'DATA SOURCES: 8 / 8 ACTIVE', type: 'success', delay: 1650 },
+  { text: '─────────────────────────────────────────────', type: 'normal', delay: 1900 },
+  { text: '⚠  NET AUTHORITY MONITORING DETECTED', type: 'warning', delay: 2150 },
+  { text: '⚠  ALL QUERIES LOGGED. PROCEED CAUTIOUSLY.', type: 'warning', delay: 2400 },
+  { text: '─────────────────────────────────────────────', type: 'normal', delay: 2650 },
+  { text: '> SYSTEM READY. AWAITING TARGET INPUT.', type: 'system', delay: 2950 },
 ]
 
 // Map each line type to a Tailwind colour class
 const TYPE_CLASS: Record<BootLine['type'], string> = {
-  system:  'text-crimson font-bold',
-  normal:  'text-crimson-dark opacity-50',
+  system: 'text-crimson font-bold',
+  normal: 'text-crimson-dark opacity-50',
   success: 'text-green-400 opacity-80',
   warning: 'text-yellow-400',
 }
@@ -40,7 +40,7 @@ interface BootSequenceProps {
 
 export function BootSequence({ onComplete }: BootSequenceProps) {
   const [visible, setVisible] = useState<number[]>([])
-  const [done, setDone]       = useState(false)
+  const [done, setDone] = useState(false)
 
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = []

@@ -12,7 +12,7 @@ interface TargetInputProps {
 }
 
 export function TargetInput({ onSubmit, disabled = false }: TargetInputProps) {
-  const [value,     setValue]     = useState('')
+  const [value, setValue] = useState('')
   const [isFocused, setIsFocused] = useState(false)
 
   const handleSubmit = (e: FormEvent) => {
@@ -31,9 +31,7 @@ export function TargetInput({ onSubmit, disabled = false }: TargetInputProps) {
         <div
           className={cn(
             'clip-corner relative border bg-void-light transition-all duration-300',
-            isFocused
-              ? 'border-crimson border-glow-intense'
-              : 'border-crimson border-opacity-25'
+            isFocused ? 'border-crimson border-glow-intense' : 'border-crimson border-opacity-25'
           )}
         >
           {/* Decorative corner tick marks */}
@@ -42,7 +40,9 @@ export function TargetInput({ onSubmit, disabled = false }: TargetInputProps) {
 
           <div className="flex items-center gap-3 px-5 py-3.5">
             {/* Terminal prompt symbol */}
-            <span className="text-glow shrink-0 font-mono text-sm font-bold text-crimson">&gt;</span>
+            <span className="text-glow shrink-0 font-mono text-sm font-bold text-crimson">
+              &gt;
+            </span>
 
             <input
               type="text"

@@ -22,9 +22,9 @@ const FONT_STYLE: React.CSSProperties = {
 }
 
 export function GlitchTitle({ text }: GlitchTitleProps) {
-  const mainControls  = useAnimation()
-  const redControls   = useAnimation()
-  const cyanControls  = useAnimation()
+  const mainControls = useAnimation()
+  const redControls = useAnimation()
+  const cyanControls = useAnimation()
 
   // Track mounted state to avoid setState on unmounted component
   const alive = useRef(true)

@@ -6,8 +6,8 @@ import { useMemo } from 'react'
 
 interface DataNode {
   id: number
-  x: number   // % from left
-  y: number   // % from top
+  x: number // % from left
+  y: number // % from top
   size: number
   delay: number
   duration: number

@@ -1,13 +1,13 @@
-import { useEffect, useState } from "react"
-import { animate, motion } from "framer-motion"
-import { ComposableMap, Geographies, Geography, Marker } from "react-simple-maps"
+import { useEffect, useState } from 'react'
+import { animate, motion } from 'framer-motion'
+import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps'
 
 interface Props {
   coords: [number, number][]
 }
 
 export default function MapView({ coords }: Props) {
-  const [scale, setScale]       = useState(147)
+  const [scale, setScale] = useState(147)
   const [centerLon, setCenterLon] = useState(0)
   const [centerLat, setCenterLat] = useState(20)
 
@@ -17,11 +17,15 @@ export default function MapView({ coords }: Props) {
     // Center on the first marker
     const [lon, lat] = coords[0]
 
-    const s   = animate(scale,     500,  { duration: 1.5, ease: "easeInOut", onUpdate: setScale })
-    const lo  = animate(centerLon, lon,  { duration: 1.5, ease: "easeInOut", onUpdate: setCenterLon })
-    const la  = animate(centerLat, lat,  { duration: 1.5, ease: "easeInOut", onUpdate: setCenterLat })
+    const s = animate(scale, 500, { duration: 1.5, ease: 'easeInOut', onUpdate: setScale })
+    const lo = animate(centerLon, lon, { duration: 1.5, ease: 'easeInOut', onUpdate: setCenterLon })
+    const la = animate(centerLat, lat, { duration: 1.5, ease: 'easeInOut', onUpdate: setCenterLat })
 
-    return () => { s.stop(); lo.stop(); la.stop() }
+    return () => {
+      s.stop()
+      lo.stop()
+      la.stop()
+    }
   }, [coords])
 
   return (
@@ -31,12 +35,12 @@ export default function MapView({ coords }: Props) {
       <motion.div
         initial={{ opacity: 0, y: 6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeInOut" }}
+        transition={{ duration: 0.8, ease: 'easeInOut' }}
       >
         <ComposableMap
           projection="geoMercator"
           projectionConfig={{ center: [centerLon, centerLat], scale }}
-          style={{ width: "100%", height: "220px" }}
+          style={{ width: '100%', height: '220px' }}
         >
           <Geographies geography="/countries-110m.json">
             {({ geographies }) =>

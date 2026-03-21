@@ -1,17 +1,17 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { GlitchTitle }   from '@/components/GlitchTitle'
-import { TargetInput }   from '@/components/TargetInput'
+import { GlitchTitle } from '@/components/GlitchTitle'
+import { TargetInput } from '@/components/TargetInput'
 import { ProbeStatusGrid } from '@/components/ProbeStatusGrid'
-import { GeoCard }       from '@/components/GeoCard'
-import { WhoisCard }     from '@/components/WhoisCard'
-import { DnsCard }       from '@/components/DnsCard'
-import { CertsCard }     from '@/components/CertsCard'
-import { SslCard }       from '@/components/SslCard'
-import { RedirectCard }  from '@/components/RedirectCard'
-import { GitHubCard }    from '@/components/GitHubCard'
-import { HeadersCard }   from '@/components/HeadersCard'
-import { GdprCard }      from '@/components/GdprCard'
-import { useSSE }        from '@/hooks/useSSE'
+import { GeoCard } from '@/components/GeoCard'
+import { WhoisCard } from '@/components/WhoisCard'
+import { DnsCard } from '@/components/DnsCard'
+import { CertsCard } from '@/components/CertsCard'
+import { SslCard } from '@/components/SslCard'
+import { RedirectCard } from '@/components/RedirectCard'
+import { GitHubCard } from '@/components/GitHubCard'
+import { HeadersCard } from '@/components/HeadersCard'
+import { GdprCard } from '@/components/GdprCard'
+import { useSSE } from '@/hooks/useSSE'
 import { useRef, useState } from 'react'
 
 export function HomePage() {
@@ -80,7 +80,7 @@ export function HomePage() {
           className="mb-4 font-mono text-xs tracking-widest"
         >
           {scanning && <span className="animate-pulse text-yellow-400">SCANNING...</span>}
-          {done     && <span className="text-green-400">SCAN COMPLETE</span>}
+          {done && <span className="text-green-400">SCAN COMPLETE</span>}
         </motion.div>
       )}
 
@@ -95,18 +95,18 @@ export function HomePage() {
             transition={{ duration: 0.4 }}
             className="w-full max-w-5xl grid grid-cols-1 gap-4 sm:grid-cols-2"
           >
-            <GeoCard     state={probes["ip-api"]}  coords={coords} />
-            <WhoisCard   state={probes["whois"]}   />
-            <DnsCard     state={probes["dns"]}     />
-            <CertsCard   state={probes["crt.sh"]}  />
-            <SslCard      state={probes["ssl"]}      />
-            <RedirectCard state={probes["redirect"]} />
-            <GitHubCard   state={probes["github"]}   langs={langs} />
+            <GeoCard state={probes['ip-api']} coords={coords} />
+            <WhoisCard state={probes['whois']} />
+            <DnsCard state={probes['dns']} />
+            <CertsCard state={probes['crt.sh']} />
+            <SslCard state={probes['ssl']} />
+            <RedirectCard state={probes['redirect']} />
+            <GitHubCard state={probes['github']} langs={langs} />
             <div className="sm:col-span-2">
-              <HeadersCard state={probes["headers"]} />
+              <HeadersCard state={probes['headers']} />
             </div>
             <div className="sm:col-span-2">
-              <GdprCard state={probes["gdpr"]} />
+              <GdprCard state={probes['gdpr']} />
             </div>
           </motion.div>
         )}

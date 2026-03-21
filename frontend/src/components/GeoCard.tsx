@@ -1,24 +1,40 @@
-import { ProbeCard } from "@/components/ProbeCard"
-import { ProbeState } from "@/hooks/useSSE"
-import MapView from "@/components/MapView"
+import { ProbeCard } from '@/components/ProbeCard'
+import { ProbeState } from '@/hooks/useSSE'
+import MapView from '@/components/MapView'
 
 interface Props {
   state: ProbeState
   coords: [number, number][]
 }
 
-const CLOUD_PROVIDERS = ["Amazon", "Google", "Microsoft", "Cloudflare", "Akamai", "Fastly", "DigitalOcean", "Hetzner", "OVH", "Linode"]
+const CLOUD_PROVIDERS = [
+  'Amazon',
+  'Google',
+  'Microsoft',
+  'Cloudflare',
+  'Akamai',
+  'Fastly',
+  'DigitalOcean',
+  'Hetzner',
+  'OVH',
+  'Linode',
+]
 
 function parseGeo(lines: string[]) {
   const get = (key: string) =>
-    lines.find((l) => l.includes(key))?.split(":").slice(1).join(":").trim() ?? "—"
+    lines
+      .find((l) => l.includes(key))
+      ?.split(':')
+      .slice(1)
+      .join(':')
+      .trim() ?? '—'
 
   return {
-    ip:       get("IP       :"),
-    location: get("Location :"),
-    isp:      get("ISP      :"),
-    org:      get("Org      :"),
-    timezone: get("Timezone :"),
+    ip: get('IP       :'),
+    location: get('Location :'),
+    isp: get('ISP      :'),
+    org: get('Org      :'),
+    timezone: get('Timezone :'),
   }
 }
 
@@ -48,16 +64,14 @@ export function GeoCard({ state, coords }: Props) {
   return (
     <ProbeCard title="GEOLOCATION // IP-API" status={state.status} color="text-green-400/50">
       <div className="space-y-1.5 mb-3">
-        <Field label="IP"       value={geo.ip} />
+        <Field label="IP" value={geo.ip} />
         <Field label="LOCATION" value={geo.location} />
-        <Field label="ISP"      value={geo.isp} />
-        <Field label="ORG"      value={geo.org} />
+        <Field label="ISP" value={geo.isp} />
+        <Field label="ORG" value={geo.org} />
         <Field label="TIMEZONE" value={geo.timezone} />
       </div>
 
-      {ctx && (
-        <p className="mb-3 font-mono text-xs text-green-400/50">{ctx}</p>
-      )}
+      {ctx && <p className="mb-3 font-mono text-xs text-green-400/50">{ctx}</p>}
 
       {coords.length > 0 && (
         <div className="h-40 w-full overflow-hidden border border-white/8">

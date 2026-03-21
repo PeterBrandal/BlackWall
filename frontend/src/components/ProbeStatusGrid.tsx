@@ -11,31 +11,85 @@ interface Probe {
 }
 
 const PROBES: Probe[] = [
-  { id: 'ipapi',    name: 'IP-API',    description: 'Geolocation & ASN lookup',      accepts: ['IP', 'DOMAIN'], status: 'active'       },
-  { id: 'whois',    name: 'WHOIS',     description: 'Registrar, dates, nameservers',  accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'dns',      name: 'DNS',       description: 'A / MX / NS / TXT records',     accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'crtsh',    name: 'CRT.SH',    description: 'Certificate transparency logs',  accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'wayback',  name: 'WAYBACK',   description: 'Historical web snapshots',       accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'github',   name: 'GITHUB',    description: 'Org repos & tech stack',         accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'headers',  name: 'HEADERS',  description: 'Security headers audit',       accepts: ['DOMAIN'],       status: 'active'       },
-  { id: 'shodan',   name: 'SHODAN',    description: 'Open ports & CVE intel',         accepts: ['IP'],           status: 'requires-key' },
-  { id: 'virustotal', name: 'VIRUSTOTAL', description: 'Threat intel & malware scan', accepts: ['IP', 'DOMAIN'], status: 'requires-key' },
+  {
+    id: 'ipapi',
+    name: 'IP-API',
+    description: 'Geolocation & ASN lookup',
+    accepts: ['IP', 'DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'whois',
+    name: 'WHOIS',
+    description: 'Registrar, dates, nameservers',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'dns',
+    name: 'DNS',
+    description: 'A / MX / NS / TXT records',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'crtsh',
+    name: 'CRT.SH',
+    description: 'Certificate transparency logs',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'wayback',
+    name: 'WAYBACK',
+    description: 'Historical web snapshots',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'github',
+    name: 'GITHUB',
+    description: 'Org repos & tech stack',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'headers',
+    name: 'HEADERS',
+    description: 'Security headers audit',
+    accepts: ['DOMAIN'],
+    status: 'active',
+  },
+  {
+    id: 'shodan',
+    name: 'SHODAN',
+    description: 'Open ports & CVE intel',
+    accepts: ['IP'],
+    status: 'requires-key',
+  },
+  {
+    id: 'virustotal',
+    name: 'VIRUSTOTAL',
+    description: 'Threat intel & malware scan',
+    accepts: ['IP', 'DOMAIN'],
+    status: 'requires-key',
+  },
 ]
 
 const STATUS_CFG: Record<ProbeStatus, { label: string; dot: string; text: string }> = {
-  'active':       { label: 'ONLINE',   dot: 'bg-green-400',  text: 'text-green-400'  },
-  'requires-key': { label: 'KEY REQ',  dot: 'bg-yellow-400', text: 'text-yellow-400' },
-  'degraded':     { label: 'DEGRADED', dot: 'bg-orange-500', text: 'text-orange-500' },
+  active: { label: 'ONLINE', dot: 'bg-green-400', text: 'text-green-400' },
+  'requires-key': { label: 'KEY REQ', dot: 'bg-yellow-400', text: 'text-yellow-400' },
+  degraded: { label: 'DEGRADED', dot: 'bg-orange-500', text: 'text-orange-500' },
 }
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  show:   { opacity: 1, transition: { staggerChildren: 0.07 } },
+  show: { opacity: 1, transition: { staggerChildren: 0.07 } },
 }
 
 const itemVariants = {
   hidden: { opacity: 0, y: 12 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 }
 
 export function ProbeStatusGrid() {
