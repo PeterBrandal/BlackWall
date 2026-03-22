@@ -135,7 +135,7 @@ export function HomePage() {
           ⚠ &nbsp; ALL DATA IS PUBLICLY AVAILABLE. EDUCATIONAL USE ONLY. &nbsp; ⚠
         </p>
         <p className="mt-1 font-mono text-xs text-crimson-dark opacity-18">
-          BLACKWALL // BUILT FOR THE NET. STAY GHOST.
+          BLACKWALL // BUILT FOR THE NET.
         </p>
       </motion.footer>
     </motion.main>

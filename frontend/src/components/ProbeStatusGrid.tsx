@@ -40,13 +40,6 @@ const PROBES: Probe[] = [
     status: 'active',
   },
   {
-    id: 'wayback',
-    name: 'WAYBACK',
-    description: 'Historical web snapshots',
-    accepts: ['DOMAIN'],
-    status: 'active',
-  },
-  {
     id: 'github',
     name: 'GITHUB',
     description: 'Org repos & tech stack',
@@ -59,20 +52,6 @@ const PROBES: Probe[] = [
     description: 'Security headers audit',
     accepts: ['DOMAIN'],
     status: 'active',
-  },
-  {
-    id: 'shodan',
-    name: 'SHODAN',
-    description: 'Open ports & CVE intel',
-    accepts: ['IP'],
-    status: 'requires-key',
-  },
-  {
-    id: 'virustotal',
-    name: 'VIRUSTOTAL',
-    description: 'Threat intel & malware scan',
-    accepts: ['IP', 'DOMAIN'],
-    status: 'requires-key',
   },
 ]
 

@@ -50,7 +50,7 @@ export function TargetInput({ onSubmit, disabled = false }: TargetInputProps) {
               onChange={(e) => setValue(e.target.value)}
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              placeholder="ENTER TARGET: name / email / IP / domain / username"
+              placeholder="ENTER TARGET: domain or IP address"
               disabled={disabled}
               autoComplete="off"
               spellCheck={false}
@@ -83,7 +83,7 @@ export function TargetInput({ onSubmit, disabled = false }: TargetInputProps) {
       </form>
 
       <p className="mt-2 px-1 font-mono text-xs text-crimson-dark opacity-35">
-        ACCEPTS: NAME · EMAIL · IP ADDRESS · DOMAIN · USERNAME
+        ACCEPTS: DOMAIN · IP ADDRESS
       </p>
     </div>
   )
